@@ -6,6 +6,8 @@
 
 > Video thumbnail sheets and animated previews, made fast.
 
+> ☕ **Support the project:** [Buy Me a Coffee](https://buymeacoffee.com/pumpkinpounder)
+
 > ⚠ **Originally built for bitporn.eu**
 >
 > This tool was originally built for **bitporn.eu**, but it can be customised for any site, tracker, upload workflow, or personal media archive.
