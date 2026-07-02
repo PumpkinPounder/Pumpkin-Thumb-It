@@ -21,7 +21,6 @@ from tkinter import filedialog, messagebox, StringVar, Text, END
 from tkinterdnd2 import DND_FILES, TkinterDnD
 from tkinter import ttk
 
-
 # ============================================================
 # CONFIG
 # ============================================================
