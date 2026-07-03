@@ -1,8 +1,14 @@
-# 🎬 Thumbnail Maker v5
+# 🎬 Pumpkin’s Thumb It v5
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+> Video thumbnail sheets and animated previews, made fast.
+
+> ☕ **Support the project:** [Buy Me a Coffee](https://buymeacoffee.com/pumpkinpounder)
+>
+> I will genuinely buy coffee. Like, a lot of coffee. Probably an unhealthy amount of coffee.
 
 > ⚠ **Originally built for bitporn.eu**
 >
@@ -14,7 +20,7 @@
 
 # 📌 Overview
 
-Thumbnail Maker v5 is a Windows GUI application for creating clean thumbnail packs from video files and folders.
+Pumpkin’s Thumb It v5 is a Windows GUI application for creating clean thumbnail packs, animated previews, and screenshots from video files and folders.
 
 It is designed for torrent upload preparation, media previews, and fast thumbnail generation for large video folders.
 
@@ -72,7 +78,7 @@ sheet_VideoName.png
 PNG compression is controlled inside the script with:
 
 ```python
-PNG_COMPRESS_LEVEL = 6
+PNG_COMPRESS_LEVEL = 1
 ```
 
 ---
@@ -175,6 +181,24 @@ The UI includes:
 - Styled log box
 - Styled logo controls
 - Compact layout for smaller screens
+
+---
+
+# 🧡 Branded Output Footer
+
+Generated thumbnail sheets include the centred orange footer:
+
+```text
+Made with Pumpkin's Thumb It Available On GitHub Free
+```
+
+Footer styling:
+
+```text
+Text:       white
+Background: #ff9f1c
+Alignment:  centre
+```
 
 ---
 
@@ -323,18 +347,19 @@ The ETA becomes more accurate as more files complete.
 
 # ⚡ Speed Modes
 
-The app has three speed profiles.
+The app has four speed profiles.
 
 | Mode    | Description |
 |---------|-------------|
 | Normal  | Best visual quality |
 | Fast    | Balanced speed and quality |
-| Fastest | Fastest processing |
+| Fastest | Quick processing |
+| Extreme | Fastest processing with lower WEBP quality |
 
 The footer inside the app shows:
 
 ```text
-Normal = best quality • Fast = balanced • Fastest = quickest
+Normal = best quality • Fast = balanced • Fastest = quick • Extreme = fastest
 ```
 
 ---
@@ -352,6 +377,9 @@ The script includes several performance-focused features:
 - Proxy-safe WEBP settings
 - WEBP file size limiting
 - Automatic quality reduction for large WEBP files
+- Faster animated WEBP clip extraction
+- Faster PNG saving
+- Shadow-free thumbnail rendering for extra speed
 
 ---
 
@@ -417,8 +445,8 @@ These can be changed if FFmpeg is installed somewhere else.
 Either clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/YOUR_USERNAME/Pumpkins-Thumb-It.git
+cd Pumpkins-Thumb-It
 ```
 
 Or download the ZIP file and extract it.
@@ -464,7 +492,7 @@ If not:
 From the project folder:
 
 ```bash
-python Thumbnail_Maker_v5.py
+python "Pumpkins Thumb It v5 FAST.py"
 ```
 
 Or double-click the `.py` file.
@@ -474,7 +502,7 @@ If your script has a different filename, run that file instead.
 Example:
 
 ```bash
-python "Thumbnail_Maker_v5_Clean_No_Comments.py"
+python "Pumpkins_Thumb_It_v5.py"
 ```
 
 ---
@@ -497,6 +525,7 @@ Drag & drop files/folders
 Normal
 Fast
 Fastest
+Extreme
 ```
 
 4. Optional settings:
@@ -595,6 +624,9 @@ LOGO_URL = "https://your-logo-url.png"
 LOGO_MAX_W_PX = 420
 LOGO_MAX_H_PX = 130
 
+FOOTER_BG = (255, 159, 28)
+FOOTER_TEXT = "Made with Pumpkin's Thumb It Available On GitHub Free"
+
 SKIP_EXISTING_OUTPUTS = True
 
 ANIMATED_SHEETS_PER_FOLDER = 5
@@ -609,7 +641,7 @@ CENTERLONGEST_FPS = 12
 MAX_WEBP_BYTES = 5 * 1024 * 1024
 MIN_WEBP_QUALITY = 25
 
-PNG_COMPRESS_LEVEL = 6
+PNG_COMPRESS_LEVEL = 1
 ```
 
 ---
@@ -666,7 +698,7 @@ You can increase that value if your site allows larger WEBP files.
 
 Try:
 
-- Using **Fast** or **Fastest** mode.
+- Using **Fastest** or **Extreme** mode.
 - Reducing the number of files processed at once.
 - Lowering animated WEBP duration or FPS.
 - Closing other heavy programs while processing.
@@ -675,4 +707,4 @@ Try:
 
 # 👤 Author
 
-Made by **Pumpkinpounder**
+Made by **PumpkinPounder**
