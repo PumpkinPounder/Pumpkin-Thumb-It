@@ -63,9 +63,9 @@ FOOTER_BORDER_PX = 3
 FOOTER_SIDE_MARGIN = 5
 FOOTER_BOTTOM_MARGIN = 0
 
-LOGO_URL = "https://imghost.dev/images/2026/03/01/e1c196b7d2e2.png"
+LOGO_URL = "https://imghost.dev/images/2026/07/05/6da6ca143482.png"
 LOGO_MAX_W_PX = 420
-LOGO_MAX_H_PX = 130
+LOGO_MAX_H_PX = 120
 
 HEADER_RIGHT_LINES = [
 
