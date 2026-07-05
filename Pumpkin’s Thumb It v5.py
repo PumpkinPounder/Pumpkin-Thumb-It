@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 import requests
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageTk
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageTk, ImageSequence
 
 import tkinter as tk
 from tkinter import filedialog, messagebox, StringVar, Text, END
@@ -53,8 +53,15 @@ SHADOW_BLUR = 10
 SHADOW_OFFSET = (0, 4)
 SHADOW_ALPHA = 120
 
-FOOTER_BG = (20, 20, 20)
-FOOTER_TEXT = "Your Footer Text"
+FOOTER_BG = (255, 159, 28)
+FOOTER_BORDER = (5, 5, 5)
+FOOTER_TEXT = "MADE WITH PUMPKIN'S THUMB IT AVAILABLE ON GITHUB FREE"
+FOOTER_TEXT_COLOUR = (245, 245, 245)
+FOOTER_TEXT_STROKE = (0, 0, 0)
+FOOTER_RADIUS = 11
+FOOTER_BORDER_PX = 3
+FOOTER_SIDE_MARGIN = 5
+FOOTER_BOTTOM_MARGIN = 0
 
 LOGO_URL = "https://imghost.dev/images/2026/03/01/e1c196b7d2e2.png"
 LOGO_MAX_W_PX = 420
@@ -581,24 +588,189 @@ def draw_banner(sheet, draw, video_path, info, sheet_width):
         draw.text((right_x, y2), line, fill=tuple(col) + (255,), font=font)
         y2 += 21
 
+def _bottom_rounded_bar_mask(width, height, radius):
+    """
+    Creates a mask with square top corners and rounded bottom corners.
+    This matches the orange footer style used in the preview screenshot.
+    """
+    width = max(1, int(width))
+    height = max(1, int(height))
+    radius = max(1, int(radius))
+
+    mask = Image.new("L", (width, height), 0)
+    d = ImageDraw.Draw(mask)
+    d.rounded_rectangle([0, 0, width - 1, height - 1], radius=radius, fill=255)
+    d.rectangle([0, 0, width - 1, radius], fill=255)
+    return mask
+
+
 def draw_footer(sheet, sheet_width, sheet_height):
     if FOOTER_HEIGHT <= 0:
         return
-    y0 = sheet_height - FOOTER_HEIGHT
-    d = ImageDraw.Draw(sheet)
-    d.rectangle([0, y0, sheet_width, sheet_height], fill=FOOTER_BG + (255,))
 
-    font = _try_load_font(18)
-    text = FOOTER_TEXT or ""
+    text = (FOOTER_TEXT or "").strip()
     if not text:
         return
 
-    bbox = d.textbbox((0, 0), text, font=font)
+    bar_x = int(FOOTER_SIDE_MARGIN)
+    bar_w = int(sheet_width - (FOOTER_SIDE_MARGIN * 2))
+    bar_h = int(FOOTER_HEIGHT - FOOTER_BOTTOM_MARGIN)
+    bar_y = int(sheet_height - FOOTER_HEIGHT)
+
+    if bar_w <= 0 or bar_h <= 0:
+        return
+
+    footer_layer = Image.new("RGBA", (bar_w, bar_h), (0, 0, 0, 0))
+
+    border_px = max(1, int(FOOTER_BORDER_PX))
+    radius = max(1, int(FOOTER_RADIUS))
+
+    border_mask = _bottom_rounded_bar_mask(bar_w, bar_h, radius)
+    border_fill = Image.new("RGBA", (bar_w, bar_h), FOOTER_BORDER + (255,))
+    footer_layer.paste(border_fill, (0, 0), border_mask)
+
+    inner_w = max(1, bar_w - (border_px * 2))
+    inner_h = max(1, bar_h - (border_px * 2))
+    inner_mask = _bottom_rounded_bar_mask(inner_w, inner_h, max(1, radius - border_px))
+    inner_fill = Image.new("RGBA", (inner_w, inner_h), FOOTER_BG + (255,))
+    footer_layer.paste(inner_fill, (border_px, border_px), inner_mask)
+
+    d = ImageDraw.Draw(footer_layer)
+
+    font = _try_load_font(18)
+    max_text_w = max(10, inner_w - 24)
+
+    if d.textlength(text, font=font) > max_text_w:
+        text = _fit_text(d, text, font, max_text_w)
+
+    bbox = d.textbbox((0, 0), text, font=font, stroke_width=2)
     tw = bbox[2] - bbox[0]
     th = bbox[3] - bbox[1]
-    x = sheet_width - tw - 14
-    y = y0 + (FOOTER_HEIGHT - th) // 2
-    d.text((x, y), text, fill=(235, 235, 235, 255), font=font)
+
+    x = int((bar_w - tw) / 2)
+    y = int((bar_h - th) / 2) - 1
+
+    d.text(
+        (x, y),
+        text,
+        fill=FOOTER_TEXT_COLOUR + (255,),
+        font=font,
+        stroke_width=2,
+        stroke_fill=FOOTER_TEXT_STROKE + (255,),
+    )
+
+    sheet.alpha_composite(footer_layer, dest=(bar_x, bar_y))
+
+def _colour_close(c1, c2, tolerance=32) -> bool:
+    try:
+        return all(abs(int(c1[i]) - int(c2[i])) <= int(tolerance) for i in range(3))
+    except Exception:
+        return False
+
+
+def image_has_footer(img: Image.Image) -> bool:
+    """
+    Best-effort check to stop screen.png / centerlongest from being stamped twice.
+    It looks for the orange footer fill in the expected footer area.
+    """
+    try:
+        if not img or img.height <= int(FOOTER_HEIGHT):
+            return False
+
+        probe = img.convert("RGBA")
+        y = int(probe.height - max(4, FOOTER_HEIGHT // 2))
+        inset = int(FOOTER_SIDE_MARGIN + FOOTER_BORDER_PX + 14)
+        xs = [
+            max(0, min(probe.width - 1, inset)),
+            max(0, min(probe.width - 1, probe.width - inset - 1)),
+        ]
+
+        hits = 0
+        for x in xs:
+            px = probe.getpixel((x, y))
+            if _colour_close(px, FOOTER_BG):
+                hits += 1
+
+        return hits >= 2
+    except Exception:
+        return False
+
+
+def add_footer_to_image(img: Image.Image) -> Image.Image:
+    """
+    Appends the same branded orange footer used on thumbnail sheets
+    to standalone images such as screen.png and centerlongest frames.
+    """
+    if FOOTER_HEIGHT <= 0 or not (FOOTER_TEXT or "").strip():
+        return img.copy()
+
+    base = img.convert("RGBA")
+    if image_has_footer(base):
+        return base.copy()
+
+    out_w = int(base.width)
+    out_h = int(base.height + FOOTER_HEIGHT)
+
+    out = Image.new("RGBA", (out_w, out_h), SHEET_BG + (255,))
+    out.alpha_composite(base, dest=(0, 0))
+    draw_footer(out, out_w, out_h)
+    return out
+
+
+def add_footer_to_existing_webp(webp_path: str, quality=80, duration_ms=None) -> bool:
+    """
+    Opens an animated/static WebP, appends the branded footer to every frame,
+    then replaces the original file. Used for centerlongest_*.webp.
+    """
+    try:
+        if not webp_path or not os.path.isfile(webp_path):
+            return False
+
+        frames = []
+        durations = []
+        loop = 0
+
+        with Image.open(webp_path) as im:
+            loop = int(im.info.get("loop", 0) or 0)
+            fallback_duration = int(duration_ms or im.info.get("duration", 83) or 83)
+
+            first_frame = im.copy().convert("RGBA")
+            if image_has_footer(first_frame):
+                return True
+
+            for frame in ImageSequence.Iterator(im):
+                frame_duration = int(frame.info.get("duration", fallback_duration) or fallback_duration)
+                frames.append(add_footer_to_image(frame.convert("RGBA")))
+                durations.append(frame_duration)
+
+        if not frames:
+            return False
+
+        q = int(quality or 80)
+        q = max(int(MIN_WEBP_QUALITY), min(q, int(PROXY_SAFE_WEBP_QUALITY_CAP)))
+
+        tmp_path = webp_path + ".footer.tmp.webp"
+        frames[0].save(
+            tmp_path,
+            format="WEBP",
+            save_all=True,
+            append_images=frames[1:],
+            duration=durations,
+            loop=loop,
+            quality=q,
+            method=int(PROXY_SAFE_WEBP_METHOD),
+        )
+        os.replace(tmp_path, webp_path)
+        return True
+    except Exception:
+        try:
+            tmp_path = webp_path + ".footer.tmp.webp"
+            if os.path.isfile(tmp_path):
+                os.remove(tmp_path)
+        except Exception:
+            pass
+        return False
+
 
 def _rounded_mask(size, radius):
     w, h = size
@@ -913,6 +1085,8 @@ def create_middle_animated_webp(video_path, cfg, out_name, clip_seconds=5.0, out
         out_path = os.path.join(scr_dir, out_name)
 
         if skip_existing and os.path.isfile(out_path):
+            q_existing = int(cfg.get("WEBP_QUALITY", 80) or 80)
+            add_footer_to_existing_webp(out_path, quality=q_existing, duration_ms=int(1000 / out_fps))
             return out_path
 
         vf = (
@@ -939,6 +1113,8 @@ def create_middle_animated_webp(video_path, cfg, out_name, clip_seconds=5.0, out
             return None
 
         q = int(cfg.get("WEBP_QUALITY", 80) or 80)
+        add_footer_to_existing_webp(out_path, quality=q, duration_ms=int(1000 / out_fps))
+
         while True:
             try:
                 if os.path.getsize(out_path) <= int(MAX_WEBP_BYTES):
@@ -952,7 +1128,10 @@ def create_middle_animated_webp(video_path, cfg, out_name, clip_seconds=5.0, out
             if "-quality" in cmd2:
                 qi = len(cmd2) - 1 - cmd2[::-1].index("-quality")
                 cmd2[qi + 1] = str(min(int(q), int(PROXY_SAFE_WEBP_QUALITY_CAP)))
-            subprocess.run(cmd2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
+            p2 = subprocess.run(cmd2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
+            if p2.returncode != 0:
+                return None
+            add_footer_to_existing_webp(out_path, quality=q, duration_ms=int(1000 / out_fps))
 
         return out_path
     except Exception:
@@ -985,8 +1164,16 @@ def create_single_frame_png(video_path, cfg, skip_existing=False):
         out_path = os.path.join(scr_dir, "screen.png")
 
         if skip_existing and os.path.isfile(out_path):
+            try:
+                with Image.open(out_path) as existing_img:
+                    if not image_has_footer(existing_img):
+                        stamped = add_footer_to_image(existing_img)
+                        stamped.save(out_path, format="PNG", compress_level=int(PNG_COMPRESS_LEVEL))
+            except Exception:
+                pass
             return out_path
 
+        img = add_footer_to_image(img)
         img.save(out_path, format="PNG", compress_level=int(PNG_COMPRESS_LEVEL))
         return out_path
     except Exception:
