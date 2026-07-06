@@ -1,4 +1,4 @@
-# 🎬 Pumpkin’s Thumb It v5
+# Pumpkin's Thumb It 5.1
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
@@ -6,21 +6,29 @@
 
 > Video thumbnail sheets and animated previews, made fast.
 
-> ☕ **Support the project:** [Buy Me a Coffee](https://buymeacoffee.com/pumpkinpounder)
+> Support the project: [Buy Me a Coffee](https://buymeacoffee.com/pumpkinpounder)
 >
 > I will genuinely buy coffee. Like, a lot of coffee. Probably an unhealthy amount of coffee.
 
-> ⚠ **Originally built for bitporn.eu**
+> Originally built for bitporn.eu
 >
 > This tool was originally built for **bitporn.eu**, but it can be customised for any site, tracker, upload workflow, or personal media archive.
 >
-> The current version includes a built-in UI for changing the logo, setting logo size, previewing the logo on a mock thumbnail header, and skipping outputs that already exist.
+> Version 5.1 includes the refreshed dark/lime Pumpkin UI, a cleaner thumbnail queue, a better progress footer, compact logo sizing controls, a Skip Existing toggle, and session-only logo changes.
 
 ---
 
-# 📌 Overview
+# Version Notes
 
-Pumpkin’s Thumb It v5 is a Windows GUI application for creating clean thumbnail packs, animated previews, and screenshots from video files and folders.
+Pumpkin's Thumb It v5 is still included in the Git repository for anyone who wants the original orange theme and old UI.
+
+Pumpkin's Thumb It 5.1 is the updated version with the new layout, refreshed controls, and dark/lime Pumpkin theme.
+
+---
+
+# Overview
+
+Pumpkin's Thumb It 5.1 is a Windows GUI application for creating clean thumbnail packs, animated previews, and screenshots from video files and folders.
 
 It is designed for torrent upload preparation, media previews, and fast thumbnail generation for large video folders.
 
@@ -35,15 +43,15 @@ The app can generate:
 - Logo-branded thumbnail headers
 - Media-info headers with video/audio details
 - ETA and elapsed-time tracking
-- Skip-existing output handling
+- Skip Existing output handling
 
 ---
 
-# ✨ Main Features
+# Main Features
 
-## 🎞 Thumbnail Sheet Generation
+## Thumbnail Sheet Generation
 
-For every video, the script creates a full thumbnail sheet using extracted frames from across the video.
+For every video, the app creates a full thumbnail sheet using extracted frames from across the video.
 
 Each sheet includes:
 
@@ -65,9 +73,7 @@ Output example:
 VIDEO_FOLDER/scr/sheet_VideoName.png
 ```
 
----
-
-## 🖼 PNG Output
+## PNG Output
 
 Thumbnail sheets are saved as PNG files.
 
@@ -78,14 +84,12 @@ sheet_VideoName.png
 PNG compression is controlled inside the script with:
 
 ```python
-PNG_COMPRESS_LEVEL = 1
+PNG_COMPRESS_LEVEL = 6
 ```
 
----
+## Animated WEBP Sheets
 
-## 🔥 Animated WEBP Sheets
-
-The script creates animated WEBP thumbnail sheets for the first videos in each folder.
+The app creates animated WEBP thumbnail sheets for the first videos in each folder.
 
 By default, the first 5 videos in a folder can create:
 
@@ -99,13 +103,9 @@ center5.webp
 
 Each animated WEBP uses multiple animated thumbnail slots from different parts of the video.
 
-This gives a better preview than a single moving section because the large slots can show different moments from the file.
+## Center Longest Preview
 
----
-
-## 🎯 Center Longest Preview
-
-For each folder, the script finds the longest video and creates a centre animation from it.
+For each folder, the app finds the longest video and creates a center animation from it.
 
 Output example:
 
@@ -115,11 +115,9 @@ centerlongest_FolderName.webp
 
 This is useful for packs where the longest video should act as the main animated preview.
 
----
+## Single Screen Output
 
-## 🖼 Single Screen Output
-
-The script also creates a single screenshot from the longest video in the folder.
+The app also creates a single screenshot from the longest video in the folder.
 
 Output:
 
@@ -127,9 +125,7 @@ Output:
 screen.png
 ```
 
----
-
-## 📁 Automatic SCR Folder
+## Automatic SCR Folder
 
 All generated files are placed inside a `scr` folder beside the videos.
 
@@ -137,25 +133,25 @@ Example:
 
 ```text
 VIDEO_FOLDER/
-├── video1.mp4
-├── video2.mkv
-└── scr/
-    ├── sheet_video1.png
-    ├── sheet_video2.png
-    ├── center1.webp
-    ├── center2.webp
-    ├── center3.webp
-    ├── center4.webp
-    ├── center5.webp
-    ├── centerlongest_FOLDER.webp
-    └── screen.png
+|-- video1.mp4
+|-- video2.mkv
+`-- scr/
+    |-- sheet_video1.png
+    |-- sheet_video2.png
+    |-- center1.webp
+    |-- center2.webp
+    |-- center3.webp
+    |-- center4.webp
+    |-- center5.webp
+    |-- centerlongest_FOLDER.webp
+    `-- screen.png
 ```
 
 ---
 
-# 🧡 Pumpkin Night UI Theme
+# Pumpkin Night UI Theme
 
-The app uses a dark Pumpkin Night style theme.
+Version 5.1 uses a dark Pumpkin Night style theme with lime action accents.
 
 Main colours:
 
@@ -163,33 +159,36 @@ Main colours:
 Background: #0b1118
 Panel:      #16212c
 Field:      #09121c
-Accent:     #ff9f1c
-Highlight:  #ffd447
-Text:       #fff4d6
-Muted Text: #c9bfa3
-Border:     #3a2a18
+Accent:     #b8e600
+Highlight:  #d5ff1f
+Text:       #f2f6fb
+Muted Text: #b6c0cb
+Border:     #36414f
 ```
 
 The UI includes:
 
 - Dark themed window
-- Rounded buttons
+- Cleaner app header with version badge
+- Rounded action buttons
 - Styled toolbar
-- Styled file list
-- Styled drop zone
-- Styled progress bar
+- Styled file list with status colours
+- Larger drag-and-drop zone
+- Persistent progress footer
 - Styled log box
 - Styled logo controls
+- Compact width and height inputs
+- Skip Existing toggle button
 - Compact layout for smaller screens
 
 ---
 
-# 🧡 Branded Output Footer
+# Branded Output Footer
 
-Generated thumbnail sheets include the centred orange footer:
+Generated thumbnail sheets include the centered orange footer:
 
 ```text
-Made with Pumpkin's Thumb It Available On GitHub Free
+MADE WITH PUMPKIN'S THUMB IT AVAILABLE ON GITHUB FREE
 ```
 
 Footer styling:
@@ -197,41 +196,42 @@ Footer styling:
 ```text
 Text:       white
 Background: #ff9f1c
-Alignment:  centre
+Alignment:  center
 ```
 
 ---
 
-# 🖱 GUI Features
+# GUI Features
 
 The app includes:
 
-- Choose Files button
-- Add Folder button
-- Drag & drop support
-- Clear file list
-- Start processing
-- Stop processing
+- Add Videos button
+- Add Video Folder button
+- Drag and drop support
+- Clear file list button
+- Generate Thumbnails button
+- Stop After Current Task button
 - Speed selector
 - File queue table
 - Processing status column
+- Colored status rows
 - Progress bar
 - Percentage display
+- ETA display
+- Elapsed-time display
 - Log box
 - Copy Log button
 - Clear Log button
-- ETA display
-- Skip Existing checkbox
+- Skip Existing toggle
 - Logo URL/path box
-- Logo width box
-- Logo height box
-- Save Logo button
-- Preview Logo button
+- Compact logo width and height boxes
+- Apply Logo button
+- Preview button
 - Browse local logo button
 
 ---
 
-# 🖼 Logo Settings
+# Logo Settings
 
 The logo can be changed directly from the app UI.
 
@@ -255,35 +255,32 @@ The UI includes:
 
 ```text
 Sheet Logo: [logo URL/path]
-W: [width]
-H: [height]
-[Save Logo] [Preview] [Browse]
+W: [width] H: [height]
+[Apply Logo] [Preview] [Browse]
 ```
 
 Recommended max logo size:
 
 ```text
-420×130
+420 x 120
 ```
 
----
+Click **Preview** to open a mock thumbnail sheet header.
 
-# 👁 Logo Preview
-
-The **Preview** button opens a mock thumbnail sheet header.
-
-This shows:
+The preview shows:
 
 - Example media info text
 - The selected logo
 - The current logo size
 - The calculated header height
 
-This allows you to check how the logo will look before generating thumbnails.
+Click **Apply Logo** to use the current logo settings for the open app session.
+
+The app does not create or save a separate settings file.
 
 ---
 
-# 📏 Auto-Resizing Header
+# Auto-Resizing Header
 
 The generated thumbnail sheet header automatically adjusts to fit the logo height.
 
@@ -291,26 +288,17 @@ This prevents the top-right logo from being clipped if a taller logo is used.
 
 ---
 
-# 💾 Saved Settings
+# Skip Existing Outputs
 
-The **Save Logo** button saves these values back into the script:
+The app includes a **Skip Existing** toggle button.
 
-```python
-LOGO_URL
-LOGO_MAX_W_PX
-LOGO_MAX_H_PX
-SKIP_EXISTING_OUTPUTS
+When enabled:
+
+```text
+Skip Existing: ON
 ```
 
-This means the next time the app opens, it remembers the saved logo settings.
-
----
-
-# ⏭ Skip Existing Outputs
-
-The app includes a **Skip existing** checkbox.
-
-When enabled, the script checks whether expected output files already exist before regenerating them.
+The app checks whether expected output files already exist before regenerating them.
 
 It checks for:
 
@@ -325,11 +313,21 @@ centerlongest_FolderName.webp
 screen.png
 ```
 
-This helps avoid wasting time reprocessing files that have already been completed.
+Use **ON** when you are adding new videos to a folder that already has generated sheets or previews.
+
+When disabled:
+
+```text
+Skip Existing: OFF
+```
+
+The app rebuilds outputs even if they already exist.
+
+Use **OFF** when you changed the logo, changed settings, or want to regenerate everything fresh.
 
 ---
 
-# ⏱ ETA / Progress Tracking
+# ETA / Progress Tracking
 
 The app shows live processing information.
 
@@ -345,28 +343,21 @@ The ETA becomes more accurate as more files complete.
 
 ---
 
-# ⚡ Speed Modes
+# Speed Modes
 
-The app has four speed profiles.
+The app has three speed profiles.
 
-| Mode    | Description |
-|---------|-------------|
-| Normal  | Best visual quality |
-| Fast    | Balanced speed and quality |
-| Fastest | Quick processing |
-| Extreme | Fastest processing with lower WEBP quality |
-
-The footer inside the app shows:
-
-```text
-Normal = best quality • Fast = balanced • Fastest = quick • Extreme = fastest
-```
+| Mode | Description |
+| --- | --- |
+| Normal | Best visual quality |
+| Fast | Balanced speed and quality |
+| Fastest | Quickest processing |
 
 ---
 
-# 🧠 Performance Features
+# Performance Features
 
-The script includes several performance-focused features:
+The app includes several performance-focused features:
 
 - Multi-threaded processing
 - CPU usage limiting
@@ -378,12 +369,11 @@ The script includes several performance-focused features:
 - WEBP file size limiting
 - Automatic quality reduction for large WEBP files
 - Faster animated WEBP clip extraction
-- Faster PNG saving
 - Shadow-free thumbnail rendering for extra speed
 
 ---
 
-# 🎥 Supported Video Formats
+# Supported Video Formats
 
 ```text
 .mp4
@@ -396,7 +386,7 @@ The script includes several performance-focused features:
 
 ---
 
-# 🖥 System Requirements
+# System Requirements
 
 - Windows OS
 - Python 3.9+
@@ -406,7 +396,7 @@ The script includes several performance-focused features:
 
 ---
 
-# 📦 Python Dependencies
+# Python Dependencies
 
 Install dependencies with:
 
@@ -414,13 +404,13 @@ Install dependencies with:
 pip install opencv-python pillow numpy requests tkinterdnd2 psutil
 ```
 
-`psutil` is recommended for CPU limiting, but the script can still run without it.
+`psutil` is recommended for CPU limiting, but the app can still run without it.
 
 ---
 
-# 🎞 FFmpeg Setup
+# FFmpeg Setup
 
-The script expects FFmpeg and FFprobe here by default:
+The app checks these default FFmpeg and FFprobe paths first:
 
 ```text
 C:\ffmpeg\bin\ffmpeg.exe
@@ -434,11 +424,11 @@ FFPROBE = r"C:\ffmpeg\bin\ffprobe.exe"
 FFMPEG  = r"C:\ffmpeg\bin\ffmpeg.exe"
 ```
 
-These can be changed if FFmpeg is installed somewhere else.
+If FFmpeg is installed somewhere else, update those values or add FFmpeg to your system PATH.
 
 ---
 
-# 🚀 Installation Guide
+# Installation Guide
 
 ## 1. Download Project
 
@@ -451,8 +441,6 @@ cd Pumpkins-Thumb-It
 
 Or download the ZIP file and extract it.
 
----
-
 ## 2. Install Python Dependencies
 
 Open Command Prompt inside the project folder and run:
@@ -461,11 +449,9 @@ Open Command Prompt inside the project folder and run:
 pip install opencv-python pillow numpy requests tkinterdnd2 psutil
 ```
 
----
-
 ## 3. Install FFmpeg
 
-This program expects FFmpeg in:
+This program checks for FFmpeg in:
 
 ```text
 C:\ffmpeg\bin\
@@ -485,75 +471,37 @@ If not:
 3. Move the folder to `C:\ffmpeg\`.
 4. Confirm `ffmpeg.exe` and `ffprobe.exe` are inside `C:\ffmpeg\bin\`.
 
+You can also add FFmpeg to your system PATH.
+
 ---
 
-# ▶️ How To Run
+# How To Run
 
 From the project folder:
 
 ```bash
-python "Pumpkins Thumb It v5 FAST.py"
+python "Pumpkin's Thumb It 5.1.py"
 ```
 
 Or double-click the `.py` file.
 
 If your script has a different filename, run that file instead.
 
-Example:
-
-```bash
-python "Pumpkins_Thumb_It_v5.py"
-```
-
 ---
 
-# 🖱 How To Use
+# How To Use
 
 1. Open the app.
-
-2. Add videos using one of these methods:
-
-```text
-Choose Files
-Add Folder
-Drag & drop files/folders
-```
-
-3. Select speed mode:
-
-```text
-Normal
-Fast
-Fastest
-Extreme
-```
-
-4. Optional settings:
-
-```text
-Change logo
-Preview logo
-Browse local logo
-Enable or disable Skip existing
-```
-
-5. Click:
-
-```text
-Start
-```
-
-6. Wait for processing to complete.
-
-7. Generated files will appear in:
-
-```text
-VIDEO_FOLDER/scr/
-```
+2. Add videos using **Add Videos**, **Add Video Folder**, or drag and drop.
+3. Select speed mode: **Normal**, **Fast**, or **Fastest**.
+4. Optional: change the logo, preview the logo, or browse for a local logo.
+5. Choose whether **Skip Existing** should be ON or OFF.
+6. Click **Generate Thumbnails**.
+7. Generated files will appear in the video's `scr` folder.
 
 ---
 
-# 📂 Output Files
+# Output Files
 
 For each video:
 
@@ -580,15 +528,15 @@ screen.png
 
 ---
 
-# ⏹ Stop Processing
+# Stop Processing
 
-Click **Stop** to safely stop processing.
+Click **Stop After Current Task** to safely stop processing.
 
-The script finishes current running tasks where possible, then stops the remaining queue.
+The app finishes current running tasks where possible, then stops the remaining queue.
 
 ---
 
-# 🧾 Log Tools
+# Log Tools
 
 The log box shows:
 
@@ -610,7 +558,7 @@ Clear Log
 
 ---
 
-# ⚙ Main Config Options
+# Main Config Options
 
 These can be edited inside the script if needed.
 
@@ -622,10 +570,10 @@ SUPPORTED_EXTENSIONS = (".mp4", ".m4v", ".mkv", ".mov", ".avi", ".wmv")
 
 LOGO_URL = "https://your-logo-url.png"
 LOGO_MAX_W_PX = 420
-LOGO_MAX_H_PX = 130
+LOGO_MAX_H_PX = 120
 
 FOOTER_BG = (255, 159, 28)
-FOOTER_TEXT = "Made with Pumpkin's Thumb It Available On GitHub Free"
+FOOTER_TEXT = "MADE WITH PUMPKIN'S THUMB IT AVAILABLE ON GITHUB FREE"
 
 SKIP_EXISTING_OUTPUTS = True
 
@@ -641,23 +589,24 @@ CENTERLONGEST_FPS = 12
 MAX_WEBP_BYTES = 5 * 1024 * 1024
 MIN_WEBP_QUALITY = 25
 
-PNG_COMPRESS_LEVEL = 1
+PNG_COMPRESS_LEVEL = 6
 ```
 
 ---
 
-# 🧩 Notes
+# Notes
 
-- The script creates a `/scr` folder automatically.
-- Existing outputs can be skipped using the checkbox.
+- The app creates a `/scr` folder automatically.
+- Existing outputs can be skipped using the Skip Existing toggle.
 - WMV files use FFmpeg extraction to avoid missing-frame issues.
 - Local logos and remote logo URLs are both supported.
+- Logo changes apply to the current app session.
 - The thumbnail sheet header grows automatically if the selected logo is taller than the default header.
 - All outputs are designed to be useful for torrent upload descriptions, gallery previews, and media packs.
 
 ---
 
-# 🛠 Troubleshooting
+# Troubleshooting
 
 ## FFmpeg Missing
 
@@ -675,6 +624,8 @@ FFPROBE = r"C:\ffmpeg\bin\ffprobe.exe"
 FFMPEG  = r"C:\ffmpeg\bin\ffmpeg.exe"
 ```
 
+Or add FFmpeg to your system PATH.
+
 ## Logo Does Not Load
 
 Check that:
@@ -686,7 +637,7 @@ Check that:
 
 ## WEBP Output Is Too Large
 
-The script automatically reduces WEBP quality until it fits under the configured limit:
+The app automatically reduces WEBP quality until it fits under the configured limit:
 
 ```python
 MAX_WEBP_BYTES = 5 * 1024 * 1024
@@ -698,13 +649,13 @@ You can increase that value if your site allows larger WEBP files.
 
 Try:
 
-- Using **Fastest** or **Extreme** mode.
+- Using **Fastest** mode.
 - Reducing the number of files processed at once.
 - Lowering animated WEBP duration or FPS.
 - Closing other heavy programs while processing.
 
 ---
 
-# 👤 Author
+# Author
 
 Made by **PumpkinPounder**
