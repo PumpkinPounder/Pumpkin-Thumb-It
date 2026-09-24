@@ -58,14 +58,18 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Verify README pipx installation
         run: |
-          pipx install --python "$(command -v python)" .
+          # Hosted runners override pipx's directories. Exercise a normal apt
+          # installation with the default per-user paths used in the README.
+          unset PIPX_HOME PIPX_BIN_DIR
+          /usr/bin/pipx install .
           "$HOME/.local/bin/thumb-it" doctor
-          pipx uninstall pumpkins-thumb-it
+          /usr/bin/pipx uninstall pumpkins-thumb-it
       - name: Save generated examples and distributable packages
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: thumb-it-${{ matrix.os }}-python-${{ matrix.python }}
+          include-hidden-files: true
           path: |
             .test-artifacts/
             dist/
@@ -101,4 +105,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: thumb-it-debian-12-python-3.11
+          include-hidden-files: true
           path: .test-artifacts/
