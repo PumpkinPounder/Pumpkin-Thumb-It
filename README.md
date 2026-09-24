@@ -657,7 +657,14 @@ Try:
 
 # Linux CLI
 
-The Linux edition lives in the [`linux` folder](linux/). It contains only the app, its installation metadata, and a user README with installation instructions and every command.
+The Linux edition is included directly in the repository's `main` branch under [`linux/`](linux/). There is no separate Linux download or extra branch to find. The folder contains only the files a user needs: the CLI, installation metadata and its user README.
+
+```text
+linux/
+├── README.md
+├── pyproject.toml
+└── thumb_it/
+```
 
 Open the [`linux` folder](linux/) and follow its **[installation instructions and full command reference](linux/README.md)**.
 
@@ -669,7 +676,7 @@ thumb-it "/media/videos" --recursive
 thumb-it --help
 ```
 
-The CLI needs Python **3.10+**, Pillow, FFmpeg/FFprobe and a system font. It runs without a desktop or the Windows GUI dependencies. Ubuntu and Debian are covered by the [automated Linux checks](https://github.com/PumpkinPounder/Pumpkin-Thumb-It/actions/workflows/linux-cli.yml).
+The CLI needs Python **3.10+**, Pillow, FFmpeg/FFprobe and a system font. It runs without a desktop or the Windows GUI dependencies. The repository workflow checks that the Linux package builds and installs on Ubuntu and Debian; users do not need the developer test files.
 
 ---
 
