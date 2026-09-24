@@ -3,9 +3,9 @@ name: Linux CLI
 on:
   push:
     branches: [main, 'codex/**']
-    paths: ['thumb_it/**', 'tests/**', 'pyproject.toml', 'README.md', '.github/workflows/linux-cli.yml']
+    paths: ['linux/**', 'tests/**', 'README.md', '.github/workflows/linux-cli.yml']
   pull_request:
-    paths: ['thumb_it/**', 'tests/**', 'pyproject.toml', 'README.md', '.github/workflows/linux-cli.yml']
+    paths: ['linux/**', 'tests/**', 'README.md', '.github/workflows/linux-cli.yml']
   workflow_dispatch:
 
 permissions:
@@ -16,6 +16,9 @@ jobs:
     name: ${{ matrix.os }} / Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: linux
     strategy:
       fail-fast: false
       matrix:
@@ -55,7 +58,7 @@ jobs:
         env:
           THUMB_IT_TEST_INSTALLED: '1'
           THUMB_IT_ARTIFACTS: ${{ github.workspace }}/.test-artifacts
-        run: python -m unittest discover -s tests -v
+        run: python -m unittest discover -s ../tests -v
       - name: Verify README pipx installation
         run: |
           # Hosted runners override pipx's directories. Exercise a normal apt
@@ -72,13 +75,16 @@ jobs:
           include-hidden-files: true
           path: |
             .test-artifacts/
-            dist/
+            linux/dist/
 
   debian:
     name: Debian 12 / Python 3.11
     runs-on: ubuntu-24.04
     container: python:3.11-slim-bookworm
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: linux
     steps:
       - uses: actions/checkout@v7
         with:
@@ -99,7 +105,7 @@ jobs:
         env:
           THUMB_IT_TEST_INSTALLED: '1'
           THUMB_IT_ARTIFACTS: ${{ github.workspace }}/.test-artifacts
-        run: python -m unittest discover -s tests -v
+        run: python -m unittest discover -s ../tests -v
       - name: Save generated examples
         if: always()
         uses: actions/upload-artifact@v7
