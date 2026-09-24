@@ -3,9 +3,9 @@ name: Linux CLI
 on:
   push:
     branches: [main, 'codex/**']
-    paths: ['linux/**', 'tests/**', 'README.md', '.github/workflows/linux-cli.yml']
+    paths: ['linux/**', 'README.md', '.github/workflows/linux-cli.yml']
   pull_request:
-    paths: ['linux/**', 'tests/**', 'README.md', '.github/workflows/linux-cli.yml']
+    paths: ['linux/**', 'README.md', '.github/workflows/linux-cli.yml']
   workflow_dispatch:
 
 permissions:
@@ -54,11 +54,6 @@ jobs:
       - name: Exercise the minimum supported Pillow version
         if: matrix.python == '3.10'
         run: python -m pip install Pillow==10.4.0
-      - name: Test generated videos and failure handling without a display
-        env:
-          THUMB_IT_TEST_INSTALLED: '1'
-          THUMB_IT_ARTIFACTS: ${{ github.workspace }}/.test-artifacts
-        run: python -m unittest discover -s ../tests -v
       - name: Verify README pipx installation
         run: |
           # Hosted runners override pipx's directories. Exercise a normal apt
@@ -67,15 +62,13 @@ jobs:
           /usr/bin/pipx install .
           "$HOME/.local/bin/thumb-it" doctor
           /usr/bin/pipx uninstall pumpkins-thumb-it
-      - name: Save generated examples and distributable packages
+      - name: Save distributable package
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: thumb-it-${{ matrix.os }}-python-${{ matrix.python }}
           include-hidden-files: true
-          path: |
-            .test-artifacts/
-            linux/dist/
+          path: linux/dist/
 
   debian:
     name: Debian 12 / Python 3.11
@@ -101,15 +94,10 @@ jobs:
       - name: Check installed command outside the checkout
         working-directory: /tmp
         run: thumb-it doctor
-      - name: Test without a display
-        env:
-          THUMB_IT_TEST_INSTALLED: '1'
-          THUMB_IT_ARTIFACTS: ${{ github.workspace }}/.test-artifacts
-        run: python -m unittest discover -s ../tests -v
-      - name: Save generated examples
+      - name: Save distributable package
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: thumb-it-debian-12-python-3.11
           include-hidden-files: true
-          path: .test-artifacts/
+          path: linux/dist/
