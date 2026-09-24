@@ -1,0 +1,104 @@
+name: Linux CLI
+
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['thumb_it/**', 'tests/**', 'pyproject.toml', 'README.md', '.github/workflows/linux-cli.yml']
+  pull_request:
+    paths: ['thumb_it/**', 'tests/**', 'pyproject.toml', 'README.md', '.github/workflows/linux-cli.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            python: '3.10'
+          - os: ubuntu-24.04
+            python: '3.12'
+          - os: ubuntu-24.04
+            python: '3.14'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install system requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core pipx
+      - name: Build and install the wheel
+        run: |
+          python -m pip install build
+          python -m build
+          python -m pip install dist/*.whl
+      - name: Check installed commands outside the source directory
+        working-directory: ${{ runner.temp }}
+        run: |
+          thumb-it --help
+          thumb-it --version
+          thumb-it doctor
+      - name: Exercise the minimum supported Pillow version
+        if: matrix.python == '3.10'
+        run: python -m pip install Pillow==10.4.0
+      - name: Test generated videos and failure handling without a display
+        env:
+          THUMB_IT_TEST_INSTALLED: '1'
+          THUMB_IT_ARTIFACTS: ${{ github.workspace }}/.test-artifacts
+        run: python -m unittest discover -s tests -v
+      - name: Verify README pipx installation
+        run: |
+          pipx install --python "$(command -v python)" .
+          "$HOME/.local/bin/thumb-it" doctor
+          pipx uninstall pumpkins-thumb-it
+      - name: Save generated examples and distributable packages
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: thumb-it-${{ matrix.os }}-python-${{ matrix.python }}
+          path: |
+            .test-artifacts/
+            dist/
+
+  debian:
+    name: Debian 12 / Python 3.11
+    runs-on: ubuntu-24.04
+    container: python:3.11-slim-bookworm
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install system requirements
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core
+      - name: Build and install the wheel
+        run: |
+          python -m pip install build
+          python -m build
+          python -m pip install dist/*.whl
+      - name: Check installed command outside the checkout
+        working-directory: /tmp
+        run: thumb-it doctor
+      - name: Test without a display
+        env:
+          THUMB_IT_TEST_INSTALLED: '1'
+          THUMB_IT_ARTIFACTS: ${{ github.workspace }}/.test-artifacts
+        run: python -m unittest discover -s tests -v
+      - name: Save generated examples
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: thumb-it-debian-12-python-3.11
+          path: .test-artifacts/

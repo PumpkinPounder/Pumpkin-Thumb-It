@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pumpkins-thumb-it"
+version = "5.1.0"
+description = "Pumpkin's Thumb It 5.1: video thumbnail sheets and animated previews from the terminal"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "PumpkinPounder"}]
+dependencies = ["Pillow>=10.4,<13"]
+
+[project.scripts]
+thumb-it = "thumb_it.cli:main"
+
+[project.urls]
+Repository = "https://github.com/PumpkinPounder/Pumpkin-Thumb-It"
+
+[tool.setuptools.packages.find]
+include = ["thumb_it*"]
