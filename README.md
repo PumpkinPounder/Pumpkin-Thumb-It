@@ -1,7 +1,7 @@
 # Pumpkin's Thumb It 5.1
 
-![Python](https://img.shields.io/badge/Python-3.9+-blue)
-![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
+![Python](https://img.shields.io/badge/Python-GUI_3.9+_%7C_CLI_3.10+-blue)
+![Platform](https://img.shields.io/badge/Platform-Windows_GUI_%7C_Linux_CLI-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 > Video thumbnail sheets and animated previews, made fast.
@@ -20,6 +20,8 @@
 
 # Version Notes
 
+**Linux users:** the new **5.1 CLI edition** runs in a terminal or over SSH. Start with the [Linux installation and commands](linux/README.md). The CLI needs Python **3.10+**, Pillow, FFmpeg and a system font; it does not need a desktop, Tkinter, OpenCV or NumPy. The original Windows GUI scripts remain available.
+
 Pumpkin's Thumb It v5 is still included in the Git repository for anyone who wants the original orange theme and old UI.
 
 Pumpkin's Thumb It 5.1 is the updated version with the new layout, refreshed controls, and dark/lime Pumpkin theme.
@@ -30,7 +32,7 @@ Both included versions now generate clean output images without the former orang
 
 # Overview
 
-Pumpkin's Thumb It 5.1 is a Windows GUI application for creating clean thumbnail packs, animated previews, and screenshots from video files and folders.
+Pumpkin's Thumb It 5.1 creates thumbnail packs, animated previews, and screenshots from video files and folders. It is available as a Windows GUI and a Linux CLI.
 
 It is designed for torrent upload preparation, media previews, and fast thumbnail generation for large video folders.
 
@@ -386,6 +388,8 @@ The app includes several performance-focused features:
 
 # System Requirements
 
+These requirements and the following GUI instructions apply to the **Windows application**. See [Linux CLI installation and commands](linux/README.md) for the terminal edition.
+
 - Windows OS
 - Python 3.9+
 - FFmpeg
@@ -433,8 +437,8 @@ If FFmpeg is installed somewhere else, update those values or add FFmpeg to your
 Either clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Pumpkins-Thumb-It.git
-cd Pumpkins-Thumb-It
+git clone https://github.com/PumpkinPounder/Pumpkin-Thumb-It.git
+cd Pumpkin-Thumb-It
 ```
 
 Or download the ZIP file and extract it.
@@ -478,7 +482,7 @@ You can also add FFmpeg to your system PATH.
 From the project folder:
 
 ```bash
-python "Pumpkin's Thumb It 5.1.py"
+python "Pumpkin’s Thumb It 5.1.py"
 ```
 
 Or double-click the `.py` file.
@@ -648,6 +652,24 @@ Try:
 - Reducing the number of files processed at once.
 - Lowering animated WEBP duration or FPS.
 - Closing other heavy programs while processing.
+
+---
+
+# Linux CLI
+
+The Linux edition lives in the [`linux` folder](linux/). It contains only the app, its installation metadata, and a user README with installation instructions and every command.
+
+Open the [`linux` folder](linux/) and follow its **[installation instructions and full command reference](linux/README.md)**.
+
+After installing the CLI using the Linux README:
+
+```bash
+thumb-it doctor
+thumb-it "/media/videos" --recursive
+thumb-it --help
+```
+
+The CLI needs Python **3.10+**, Pillow, FFmpeg/FFprobe and a system font. It runs without a desktop or the Windows GUI dependencies. Ubuntu and Debian are covered by the [automated Linux checks](https://github.com/PumpkinPounder/Pumpkin-Thumb-It/actions/workflows/linux-cli.yml).
 
 ---
 
